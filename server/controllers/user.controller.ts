@@ -6,6 +6,7 @@ import { CatchAsyncError } from "../middleware/catchAsyncErrors";
 import jwt, { Secret } from "jsonwebtoken";
 import ejs from "ejs"; 
 import path from "path";
+import sendMail from "../utils/sendMail";
 
 
 //register user
@@ -37,6 +38,23 @@ export const registrationUser = CatchAsyncError(async (req:Request, res:Response
 
         const data = {user: {name:user.name}, activationCode};
         const html = await ejs.renderFile(path.join(__dirname, "../mails/activation-mail.ejs"), data);
+
+        try {
+            await sendMail({
+                email: user.email,
+                subject: "Account Activation",
+                template: "activation-mail.ejs",
+                data,
+            });
+
+            res.status(201).json({
+                success: true,
+                message: `An activation email has been sent to ${user.email}`,
+                activationToken: activationToken.token,
+            });
+        } catch (error:any) {
+            return next(new ErrorHandler(error.message, 400));
+        }
 
     } 
         catch (error:any) {
