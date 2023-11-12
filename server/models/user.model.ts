@@ -1,91 +1,99 @@
 require("dotenv").config();
-import mongoose,{Document,Model,Schema} from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const emailRegexPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export interface IUser extends Document{
+export interface IUser extends Document {
     name: string;
     email: string;
     password: string;
     avatar: {
-        public_id: string;
-        url: string;
-    },
+      public_id: string;
+      url: string;
+    };
     role: string;
     isVerified: boolean;
-    courses: Array<{courseId:string}>;
+    courses: Array<{ courseId: string }>;
     comparePassword: (password: string) => Promise<boolean>;
     SignAccessToken: () => string;
     SignRefreshToken: () => string;
-}
+  }
 
-const userSchema: Schema<IUser> = new Schema({
-    name: {
+  const userSchema: Schema<IUser> = new mongoose.Schema(
+    {
+      name: {
         type: String,
-        required: [true,"Please enter your name"],
-    },
-    email: {
+        required: [true, "Please enter your name"],
+      },
+      email: {
         type: String,
-        required: [true,"Please enter your email"],
+        required: [true, "Please enter your email"],
         validate: {
-            validator: function(value:string){
-                return emailRegexPattern.test(value);
-            },
-            message: props => `please enter a valid email address`
+          validator: function (value: string) {
+            return emailRegexPattern.test(value);
+          },
+          message: "please enter a valid email",
         },
         unique: true,
-    },
-    password: {
+      },
+      password: {
         type: String,
-        required: [true,"Please enter your password"],
-        minlength: [6,"Password must be at least 6 characters long"],
+        minlength: [6, "Password must be at least 6 characters"],
         select: false,
-    },
-    avatar: {
+      },
+      avatar: {
         public_id: String,
         url: String,
-    },
-    role: {
+      },
+      role: {
         type: String,
         default: "user",
-    },
-    isVerified: {
+      },
+      isVerified: {
         type: Boolean,
         default: false,
-    },
-    courses: [
+      },
+      courses: [
         {
-            courseId: String,
+          courseId: String,
         },
-    ],
-},{timestamps: true});
+      ],
+    },
+    { timestamps: true }
+  );
 
-//Hash Password before saving user
-userSchema.pre<IUser>("save",async function(next){
-    if(!this.isModified("password")){
-        next();
+// Hash Password before saving
+userSchema.pre<IUser>("save", async function (next) {
+    if (!this.isModified("password")) {
+      next();
     }
-    this.password = await bcrypt.hash(this.password,10);
+    this.password = await bcrypt.hash(this.password, 10);
     next();
-});
+  });
 
-//sign access token
-userSchema.methods.SignAccessToken = function() {
-    return jwt.sign({id: this._id}, process.env.ACCESS_TOKEN || "");
-};
+// sign access token
+userSchema.methods.SignAccessToken = function () {
+    return jwt.sign({ id: this._id }, process.env.ACCESS_TOKEN || "", {
+      expiresIn: "5m",
+    });
+  };
 
-//sign refresh token
-userSchema.methods.SignRefreshToken = function() {
-    return jwt.sign({id: this._id},process.env.REFRESH_TOKEN || "")
-}
+// sign refresh token
+userSchema.methods.SignRefreshToken = function () {
+    return jwt.sign({ id: this._id }, process.env.REFRESH_TOKEN || "", {
+      expiresIn: "3d",
+    });
+  };
 
-//Compare user password
-userSchema.methods.comparePassword = async function(enteredPassword:string): Promise<boolean>{
-    return await bcrypt.compare(enteredPassword,this.password);
-};
+// compare password
+userSchema.methods.comparePassword = async function (
+    enteredPassword: string
+  ): Promise<boolean> {
+    return await bcrypt.compare(enteredPassword, this.password);
+  };
 
-const userModel: Model<IUser> = mongoose.model("User",userSchema);
+  const userModel: Model<IUser> = mongoose.model("User", userSchema);
 
-export default userModel;
+  export default userModel;
