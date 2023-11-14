@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import path from "path";
 import ejs from "ejs";
 import sendMail from "../utils/sendMail";
+import NotificationModel from "../models/notification.Model";
 
 // upload course
 export const uploadCourse = CatchAsyncError(
@@ -199,11 +200,11 @@ interface IAddQuestionData {
         // add this question to our course content
         couseContent.questions.push(newQuestion);
   
-/*         await NotificationModel.create({
+        await NotificationModel.create({
           user: req.user?._id,
           title: "New Question Received",
           message: `You have a new question in ${couseContent.title}`,
-        }); */
+        });
   
         // save the updated course
         await course?.save();
@@ -269,11 +270,11 @@ interface IAddAnswerData {
   
         if (req.user?._id === question.user._id) {
           // create a notification
-/*           await NotificationModel.create({
+          await NotificationModel.create({
             user: req.user?._id,
             title: "New Question Reply Received",
             message: `You have a new question reply in ${couseContent.title}`,
-          }); */
+          });
         } else {
           const data = {
             name: question.user.name,
@@ -361,11 +362,11 @@ interface IAddReviewData {
         await redis.set(courseId, JSON.stringify(course), "EX", 604800); // 7days
   
         // create notification
-/*         await NotificationModel.create({
+        await NotificationModel.create({
           user: req.user?._id,
           title: "New Review Received",
           message: `${req.user?.name} has given a review in ${course?.name}`,
-        }); */
+        });
   
   
         res.status(200).json({
