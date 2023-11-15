@@ -11,6 +11,7 @@ import { FcGoogle } from "react-icons/fc";
 import { styles } from "../../../app/styles/style";
 /* import { useRegisterMutation } from "@/redux/features/auth/authApi"; */
 import { toast } from "react-hot-toast";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
 
 type Props = {
   setRoute: (route: string) => void;
@@ -26,9 +27,9 @@ const schema = Yup.object().shape({
 
 const Signup: FC<Props> = ({ setRoute }) => {
   const [show, setShow] = useState(false);
-/*   const [register,{data,error,isSuccess}] = useRegisterMutation();  */
+  const [register,{data,error,isSuccess}] = useRegisterMutation(); 
 
-/*   useEffect(() => {
+  useEffect(() => {
    if(isSuccess){
       const message = data?.message || "Registration successful";
       toast.success(message);
@@ -40,18 +41,17 @@ const Signup: FC<Props> = ({ setRoute }) => {
       toast.error(errorData.data.message);
     }
    }
-  }, [isSuccess,error]); */
+  }, [isSuccess,error]);
   
 
   const formik = useFormik({
     initialValues: { name: "", email: "", password: "" },
     validationSchema: schema,
     onSubmit: async ({name, email, password }) => {
-        setRoute("Verification");
-/*       const data = {
+      const data = {
         name,email,password
       };
-      await register(data); */
+      await register(data);
     },
   });
 
