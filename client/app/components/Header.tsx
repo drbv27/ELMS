@@ -4,6 +4,10 @@ import React,{FC, useState} from 'react'
 import NavItems from "../utils/NavItems";
 import { ThemeSwitcher } from "../utils/ThemeSwitcher";
 import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
+import CustomModal from "../utils/CustomModal";
+import Login from "../components/Auth/Login";
+import SignUp from "../components/Auth/SignUp";
+import Verification from "../components/Auth/Verification";
 import Image from "next/image";
 
 type Props = {
@@ -97,6 +101,48 @@ const Header: FC<Props> = ({ activeItem, setOpen, route, open, setRoute }) => {
             </div>
             )}
         </div>
+        {route === "Login" && (
+        <>
+          {open && (
+            <CustomModal
+              open={open}
+              setOpen={setOpen}
+              setRoute={setRoute}
+              activeItem={activeItem}
+              component={Login}
+/*               refetch={refetch} */
+            />
+          )}
+        </>
+      )}
+
+        {route === "Sign-Up" && (
+            <>
+            {open && (
+                <CustomModal
+                open={open}
+                setOpen={setOpen}
+                setRoute={setRoute}
+                activeItem={activeItem}
+                component={SignUp}
+                />
+            )}
+            </>
+        )}
+
+        {route === "Verification" && (
+            <>
+            {open && (
+                <CustomModal
+                open={open}
+                setOpen={setOpen}
+                setRoute={setRoute}
+                activeItem={activeItem}
+                component={Verification}
+                />
+            )}
+            </>
+        )}
     </div>
   )
 }

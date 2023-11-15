@@ -28,7 +28,8 @@ const Hero: FC<Props> = (props) => {
       <div className="absolute top-[100px] 1000px:top-[unset] 1500px:h-[700px] 1500px:w-[700px] 1100px:h-[600px] 1100px:w-[600px] h-[40vh] left-5 w-[40vh] hero_animation rounded-[50%] 1100px:left-8 1500px:left-14"></div>
       <div className="1000px:w-[40%] flex 1000px:min-h-screen items-center justify-end pt-[70px] 1000px:pt-[0] z-10">
         <Image
-          src={require("../../../public/assets/banner-img-1.png")}
+          /* src={require("../../../public/assets/banner-img-1.png")} */
+          src={require("../../../public/assets/deskfull.png")}
           width={400}
           height={400}
           alt=""
@@ -51,7 +52,7 @@ const Hero: FC<Props> = (props) => {
             placeholder="Search Courses..."
             className="bg-transparent border dark:border-none dark:bg-[#575757] dark:placeholder:text-[#ffffffdd] rounded-[5px] p-2 w-full h-full outline-none text-[#0000004e] dark:text-[#ffffffe6] text-[20px] font-[500] font-Josefin"
           />
-          <div className="absolute flex items-center justify-center w-[50px] cursor-pointer h-[50px] right-0 top-0 bg-[#39c1f3] rounded-r-[5px]">
+          <div className="absolute flex items-center justify-center w-[50px] cursor-pointer h-[50px] right-0 top-0 bg-[#f25c54] rounded-r-[5px]">
             <BiSearch className="text-white" size={30} />
           </div>
         </div>
@@ -77,7 +78,7 @@ const Hero: FC<Props> = (props) => {
             500K+ People already trusted us.{" "}
             <Link
               href="/courses"
-              className="dark:text-[#46e256] text-[crimson]"
+              className="dark:text-[#9d4edd] text-[#f25c54]"
             >
               View Courses
             </Link>{" "}
