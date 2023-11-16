@@ -1,5 +1,5 @@
 import { apiSlice } from "../api/apiSlice";
-import { /* userLoggedIn, userLoggedOut, */ userRegistration } from "./authSlice";
+import { userLoggedIn, userLoggedOut, userRegistration } from "./authSlice";
 
 type RegistrationResponse = {
   message: string;
@@ -41,7 +41,7 @@ export const authApi = apiSlice.injectEndpoints({
         },
       }),
     }),
-/*     login: builder.mutation({
+    login: builder.mutation({
       query: ({ email, password }) => ({
         url: "login",
         method: "POST",
@@ -105,14 +105,14 @@ export const authApi = apiSlice.injectEndpoints({
           console.log(error);
         }
       },
-    }), */
+    }),
   }),
 });
 
 export const {
   useRegisterMutation,
   useActivationMutation,
-/*   useLoginMutation,
+  useLoginMutation,
   useSocialAuthMutation,
-  useLogOutQuery */
+  useLogOutQuery
 } = authApi;

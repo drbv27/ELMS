@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { userLoggedIn } from "../auth/authSlice";
 /* import { userLoggedIn } from "../auth/authSlice"; */
 
 export const apiSlice = createApi({
@@ -7,7 +8,7 @@ export const apiSlice = createApi({
     baseUrl: process.env.NEXT_PUBLIC_SERVER_URI,
   }),
   endpoints: (builder) => ({
-/*     refreshToken: builder.query({
+    refreshToken: builder.query({
       query: (data) => ({
         url: "refresh",
         method: "GET",
@@ -33,9 +34,9 @@ export const apiSlice = createApi({
           console.log(error);
         }
       },
-    }), */
+    }),
   }),
 });
 
 
-export const { /* useRefreshTokenQuery, useLoadUserQuery */ } = apiSlice;
+export const { useRefreshTokenQuery, useLoadUserQuery  } = apiSlice;
